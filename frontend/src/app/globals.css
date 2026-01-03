@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+/* =========================
+   ROOT THEME VARIABLES
+========================= */
+:root {
+  --background: #ffffff;
+  --foreground: #111827; /* slate-900 */
+}
+
+/* DARK MODE SUPPORT (OPTIONAL) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+/* =========================
+   GLOBAL RESET + FIXES
+========================= */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  overflow-x: hidden; /* ❗ SIDE SCROLL FIX (VERY IMPORTANT) */
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+}
+
+/* =========================
+   IMAGE FIX (HERO SLIDER)
+========================= */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* =========================
+   BUTTON SMOOTHNESS
+========================= */
+button {
+  transition: all 0.25s ease;
+}
+
+/* =========================
+   SRI MANDIR FEEL HELPERS
+========================= */
+.section-padding {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.container {
+  max-width: 80rem; /* 1280px */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 18s linear infinite;
+}
