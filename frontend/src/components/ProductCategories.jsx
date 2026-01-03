@@ -14,6 +14,16 @@ const categories = [
     image: "/products/pyrite/pyritebracelets-1.webp",
     href: "/products", // ✅ PRODUCTS PAGE
   },
+  {
+    title: "Crystal Plates",
+    image: "/crystals/plate/Selenite-Plate-to-Charge-Reiki-Crystal-1.webp",
+    href: "/crystalPlates", // ✅ STONES PAGE
+  },
+  {
+    title: "Spiritual Kits Plates",
+    image: "/spiritualkits/poojakits/Sheesham-Wood-Pooja-Organizer-Box-4.webp",
+    href: "/spiritualkits", // ✅ STONES PAGE
+  },
 ];
 
 export default function ProductCategories() {

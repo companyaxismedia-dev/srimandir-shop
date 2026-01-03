@@ -3,7 +3,6 @@
 import Link from "next/link";
 
 export default function CrystalPlate({ product }) {
-  // 🛡️ SAFETY
   if (!product) return null;
 
   const image =
@@ -19,12 +18,9 @@ export default function CrystalPlate({ product }) {
         <div className="h-56 w-full bg-black flex items-center justify-center cursor-pointer">
           <img
             src={image}
-            alt={`${product.name} | Sri Mandir Shop`}
-            loading="lazy"
-            onError={(e) => {
-              e.currentTarget.src = "/products/placeholder.webp";
-            }}
+            alt={product.name}
             className="max-h-full max-w-full object-contain"
+            onError={(e) => (e.currentTarget.src = "/products/placeholder.webp")}
           />
         </div>
       </Link>

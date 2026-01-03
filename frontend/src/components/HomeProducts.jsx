@@ -3,34 +3,44 @@
 import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 
-export default function HomeStones() {
-  const [stones, setStones] = useState([]);
-  const [loading, setLoading] = useState(true);
+const API_BASE = "http://localhost:5000/api";
+
+export default function HomeProducts() {
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/stones")
+    fetch(`${API_BASE}/products/featured`)
       .then((res) => res.json())
       .then((data) => {
-        setStones(Array.isArray(data) ? data.slice(0, 4) : []);
-        setLoading(false);
+        setProducts(Array.isArray(data) ? data.slice(0, 4) : []);
       })
-      .catch(() => setLoading(false));
+      .catch((err) => {
+        console.error("HomeProducts error:", err);
+      });
   }, []);
 
-  if (loading) return null;
-  if (stones.length === 0) return null;
+  if (!products.length) return null;
 
   return (
-    <section className="px-6 md:px-10 py-16 bg-[#0f060b]">
-      <h2 className="text-3xl font-bold text-white mb-8">
-        Healing Stones
-      </h2>
+    <section className="px-6 md:px-10 py-16 bg-[#140810]">
+      <div className="flex justify-between items-center mb-8">
+        <h2 className="text-3xl font-bold text-white">
+          Featured Products
+        </h2>
+
+        <a
+          href="/products"
+          className="text-orange-400 font-semibold hover:underline"
+        >
+          View All →
+        </a>
+      </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        {stones.map((stone) => (
+        {products.map((product) => (
           <ProductCard
-            key={stone._id}
-            product={stone}
+            key={product._id}
+            product={product}
           />
         ))}
       </div>
