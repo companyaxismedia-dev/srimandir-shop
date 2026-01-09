@@ -1,5 +1,3 @@
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "https://srimandir-shop.onrender.com";
-
-export default API_BASE_URL;
+export const API_BASE =
+  process.env.NEXT_PUBLIC_API_BASE ||
+  "http://localhost:5000/api";
