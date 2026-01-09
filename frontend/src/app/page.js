@@ -12,12 +12,9 @@ import StoneCard from "../components/StoneCard";
 import CrystalPlate from "../components/CrystalPlate";
 import SpiritualKitCard from "../components/SpiritualKitCard";
 
-// ✅ API BASE (PRODUCTION SAFE)
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE ||
-  "https://srimandir-backend.onrender.com/api";
+import { API_BASE } from "../lib/api";
 
-// ✅ Axios instance with timeout (IMPORTANT)
+// ✅ Axios instance
 const api = axios.create({
   baseURL: API_BASE,
   timeout: 15000,
@@ -33,17 +30,13 @@ export default function HomePage() {
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        const [
-          featuredRes,
-          stonesRes,
-          platesRes,
-          kitsRes,
-        ] = await Promise.allSettled([
-          api.get("/products/featured"),
-          api.get("/stones"),
-          api.get("/crystalplates"),
-          api.get("/spiritualkits"),
-        ]);
+        const [featuredRes, stonesRes, platesRes, kitsRes] =
+          await Promise.allSettled([
+            api.get("/products/featured"),
+            api.get("/stones"),
+            api.get("/crystalplates"),
+            api.get("/spiritualkits"),
+          ]);
 
         if (featuredRes.status === "fulfilled") {
           setFeatured(
@@ -78,11 +71,6 @@ export default function HomePage() {
         }
       } catch (err) {
         console.error("Homepage API error:", err);
-        alert(
-          err?.response?.data?.message ||
-            err.message ||
-            "Backend not responding"
-        );
       } finally {
         setLoading(false);
       }
@@ -107,7 +95,9 @@ export default function HomePage() {
         </div>
 
         {loading ? (
-          <p className="text-gray-400">Loading products...</p>
+          <p className="text-gray-400">
+            Loading products… (first load may take ~30s)
+          </p>
         ) : featured.length === 0 ? (
           <p className="text-gray-400">No products available</p>
         ) : (
@@ -143,10 +133,7 @@ export default function HomePage() {
       <section className="px-6 md:px-10 py-16 bg-[#140810] text-white">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold">Crystal Plates</h2>
-          <Link
-            href="/crystalPlates"
-            className="text-orange-400 hover:underline"
-          >
+          <Link href="/crystalPlates" className="text-orange-400 hover:underline">
             View All →
           </Link>
         </div>

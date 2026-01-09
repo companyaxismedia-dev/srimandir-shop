@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { API_BASE } from "../lib/api";
+
 
 export default function SpiritualKitCard({ kit }) {
   if (!kit?.images?.[0]) return null;
