@@ -12,23 +12,8 @@ dotenv.config();
 
 const app = express();
 
-/* ✅ FINAL CORS CONFIG */
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000",
-      "https://srimandir-shop.vercel.app",
-      "https://srimandir.shop",
-      "https://www.srimandir.shop",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true,
-  })
-);
-
-/* IMPORTANT FOR PREFLIGHT */
-app.options("*", cors());
-
+/* MIDDLEWARE */
+app.use(cors());
 app.use(express.json());
 
 /* TEST */
