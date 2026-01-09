@@ -69,8 +69,8 @@ export default function HomePage() {
               : []
           );
         }
-      } catch (err) {
-        console.error("Homepage API error:", err);
+      } catch (error) {
+        console.error("Homepage API error:", error);
       } finally {
         setLoading(false);
       }
@@ -174,3 +174,4 @@ export default function HomePage() {
     </>
   );
 }
+
