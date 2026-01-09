@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import SpiritualKitCard from "../../components/SpiritualKitCard";
+import API_BASE_URL from "@/lib/api";
 
-const API = "http://localhost:5000/api/spiritualkits";
+const API = `${API_BASE_URL}/api/spiritualkits`;
 
 export default function SpiritualKitsPage() {
   const [kits, setKits] = useState([]);

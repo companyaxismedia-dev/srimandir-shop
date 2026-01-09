@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import API_BASE_URL from "@/lib/api";
 
 export default function StoneDetailPage() {
   const { id } = useParams();
@@ -13,7 +14,7 @@ export default function StoneDetailPage() {
   useEffect(() => {
     if (!id) return;
 
-    fetch(`http://localhost:5000/api/stones/${id}`)
+    fetch(`${API_BASE_URL}/api/stones/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error("Invalid stone");
         return res.json();
@@ -48,7 +49,6 @@ export default function StoneDetailPage() {
             />
           </div>
 
-          {/* THUMBNAILS */}
           <div className="flex gap-3 mt-4 flex-wrap">
             {stone.images.map((img, i) => (
               <div

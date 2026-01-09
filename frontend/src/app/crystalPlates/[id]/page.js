@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import API_BASE_URL from "@/lib/api";
 
 export default function CrystalPlateDetailPage() {
   const { id } = useParams();
@@ -13,7 +14,7 @@ export default function CrystalPlateDetailPage() {
   useEffect(() => {
     if (!id) return;
 
-    fetch(`http://localhost:5000/api/crystalplates/${id}`)
+    fetch(`${API_BASE_URL}/api/crystalplates/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error("Invalid crystal plate");
         return res.json();
@@ -49,7 +50,7 @@ export default function CrystalPlateDetailPage() {
     <div className="bg-[#140810] min-h-screen text-white p-10">
       <div className="grid md:grid-cols-2 gap-10">
 
-        {/* LEFT IMAGE SECTION */}
+        {/* LEFT IMAGE */}
         <div>
           <div className="w-full h-[420px] bg-black rounded-lg flex items-center justify-center">
             <img
@@ -80,7 +81,7 @@ export default function CrystalPlateDetailPage() {
           </div>
         </div>
 
-        {/* RIGHT INFO SECTION */}
+        {/* RIGHT INFO */}
         <div>
           <h1 className="text-3xl font-bold">{plate.name}</h1>
 

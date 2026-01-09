@@ -2,16 +2,16 @@
 
 import { useEffect, useState } from "react";
 import ProductCard from "../../components/CrystalPlate";
+import API_BASE_URL from "@/lib/api";
 
 export default function CrystalPlatesPage() {
   const [plates, setPlates] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/crystalplates")
+    fetch(`${API_BASE_URL}/api/crystalplates`)
       .then((res) => res.json())
       .then((data) => {
-        // ✅ Safety check
         if (Array.isArray(data)) {
           setPlates(data);
         } else {

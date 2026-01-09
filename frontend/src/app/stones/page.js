@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import StoneCard from "../../components/StoneCard";
+import API_BASE_URL from "@/lib/api";
 
 export default function StonesPage() {
   const [stones, setStones] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/stones")
+    fetch(`${API_BASE_URL}/api/stones`)
       .then((res) => res.json())
       .then((data) => {
         setStones(Array.isArray(data) ? data : []);
@@ -33,10 +34,7 @@ export default function StonesPage() {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {stones.map((stone) => (
-          <StoneCard
-            key={stone._id}
-            stone={stone}
-          />
+          <StoneCard key={stone._id} stone={stone} />
         ))}
       </div>
     </main>

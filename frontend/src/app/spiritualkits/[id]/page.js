@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import API_BASE_URL from "@/lib/api";
 
 export default function SpiritualKitDetailPage() {
   const { id } = useParams();
@@ -13,7 +14,7 @@ export default function SpiritualKitDetailPage() {
   useEffect(() => {
     if (!id) return;
 
-    fetch(`http://localhost:5000/api/spiritualkits/${id}`)
+    fetch(`${API_BASE_URL}/api/spiritualkits/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error("Invalid spiritual kit");
         return res.json();
@@ -49,7 +50,7 @@ export default function SpiritualKitDetailPage() {
     <div className="bg-[#140810] min-h-screen text-white px-6 md:px-10 py-10">
       <div className="grid md:grid-cols-2 gap-10 items-start">
 
-        {/* 🖼️ LEFT IMAGE SECTION (SAME AS CRYSTAL PLATES) */}
+        {/* LEFT IMAGE */}
         <div>
           <div className="w-full h-[420px] bg-black rounded-xl flex items-center justify-center">
             <img
@@ -59,7 +60,6 @@ export default function SpiritualKitDetailPage() {
             />
           </div>
 
-          {/* 🔽 THUMBNAILS */}
           <div className="flex gap-3 mt-4 flex-wrap">
             {kit.images.map((img, i) => (
               <div
@@ -81,11 +81,10 @@ export default function SpiritualKitDetailPage() {
           </div>
         </div>
 
-        {/* 📄 RIGHT INFO SECTION */}
+        {/* RIGHT INFO */}
         <div>
           <h1 className="text-3xl font-bold">{kit.name}</h1>
 
-          {/* 💰 PRICE */}
           <p className="text-orange-500 text-2xl mt-2">
             ₹{kit.price}
             {kit.mrp > kit.price && (
@@ -95,21 +94,18 @@ export default function SpiritualKitDetailPage() {
             )}
           </p>
 
-          {/* SHORT DESCRIPTION */}
           {kit.shortDescription && (
             <p className="mt-3 text-gray-300">
               {kit.shortDescription}
             </p>
           )}
 
-          {/* FULL DESCRIPTION */}
           {kit.description && (
             <p className="mt-4 text-gray-300 leading-relaxed">
               {kit.description}
             </p>
           )}
 
-          {/* BENEFITS */}
           {kit.benefits?.length > 0 && (
             <ul className="mt-4 list-disc list-inside text-gray-300">
               {kit.benefits.map((benefit, i) => (
@@ -118,7 +114,6 @@ export default function SpiritualKitDetailPage() {
             </ul>
           )}
 
-          {/* ITEMS INCLUDED */}
           {kit.itemsIncluded?.length > 0 && (
             <>
               <h3 className="mt-6 text-xl font-semibold">
@@ -132,7 +127,6 @@ export default function SpiritualKitDetailPage() {
             </>
           )}
 
-          {/* ACTION BUTTONS */}
           <div className="flex gap-4 mt-8">
             <button className="bg-orange-500 px-6 py-3 rounded hover:bg-orange-600 transition">
               Add to Cart
