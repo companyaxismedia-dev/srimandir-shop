@@ -6,6 +6,7 @@ import { API_BASE } from "../lib/api";
 
 export default function HomeCrystalPlates() {
   const [plates, setPlates] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(`${API_BASE}/crystalplates`)
@@ -13,12 +14,11 @@ export default function HomeCrystalPlates() {
       .then((data) => {
         setPlates(Array.isArray(data) ? data.slice(0, 4) : []);
       })
-      .catch((err) => {
-        console.error("HomeCrystalPlates error:", err);
-      });
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
 
-  if (!plates.length) return null;
+  if (loading) return null;
 
   return (
     <section className="px-6 md:px-10 py-12 bg-[#0f060b]">
@@ -26,23 +26,20 @@ export default function HomeCrystalPlates() {
         <h2 className="text-3xl font-bold text-white">
           Crystal Plates
         </h2>
-
-        <a
-          href="/crystalPlates"
-          className="text-orange-400 hover:underline"
-        >
+        <a href="/crystalPlates" className="text-orange-400 hover:underline">
           View All →
         </a>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        {plates.map((plate) => (
-          <CrystalPlateCard
-            key={plate._id}
-            product={plate}
-          />
-        ))}
-      </div>
+      {plates.length === 0 ? (
+        <p className="text-gray-400">No crystal plates available</p>
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {plates.map((plate) => (
+            <CrystalPlateCard key={plate._id} product={plate} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
