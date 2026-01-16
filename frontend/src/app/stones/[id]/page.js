@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import API_BASE_URL from "@/lib/api";
+import { API_BASE } from "@/lib/api"; // ✅ named import
 
 export default function StoneDetailPage() {
   const { id } = useParams();
@@ -14,7 +14,7 @@ export default function StoneDetailPage() {
   useEffect(() => {
     if (!id) return;
 
-    fetch(`${API_BASE_URL}/api/stones/${id}`)
+    fetch(`${API_BASE}/stones/${id}`) // ✅ no extra /api
       .then((res) => {
         if (!res.ok) throw new Error("Invalid stone");
         return res.json();

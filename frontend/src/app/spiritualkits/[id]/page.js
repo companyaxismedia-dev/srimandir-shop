@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import API_BASE_URL from "@/lib/api";
+import { API_BASE } from "@/lib/api"; // ✅ correct import
 
 export default function SpiritualKitDetailPage() {
   const { id } = useParams();
@@ -14,7 +14,7 @@ export default function SpiritualKitDetailPage() {
   useEffect(() => {
     if (!id) return;
 
-    fetch(`${API_BASE_URL}/api/spiritualkits/${id}`)
+    fetch(`${API_BASE}/spiritualkits/${id}`) // ✅ no extra /api
       .then((res) => {
         if (!res.ok) throw new Error("Invalid spiritual kit");
         return res.json();

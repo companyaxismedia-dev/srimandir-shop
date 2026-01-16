@@ -2,24 +2,17 @@
 
 import { useEffect, useState } from "react";
 import ProductCard from "../../components/ProductCard";
-
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "https://srimandir-shop.onrender.com";
+import { API_BASE } from "@/lib/api"; // ✅ single source of truth
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/products`)
+    fetch(`${API_BASE}/products`) // ✅ clean & consistent
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) {
-          setProducts(data);
-        } else {
-          setProducts([]);
-        }
+        setProducts(Array.isArray(data) ? data : []);
         setLoading(false);
       })
       .catch((err) => {

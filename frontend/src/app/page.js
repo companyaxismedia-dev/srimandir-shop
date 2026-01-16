@@ -4,17 +4,21 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 
+// UI Components
 import HeroSlider from "../components/HeroSlider";
 import TrustBar from "../components/TrustBar";
 import ProductCategories from "../components/ProductCategories";
+
+// Cards
 import ProductCard from "../components/ProductCard";
 import StoneCard from "../components/StoneCard";
 import CrystalPlate from "../components/CrystalPlate";
 import SpiritualKitCard from "../components/SpiritualKitCard";
 
+// API Base (single source of truth)
 import { API_BASE } from "../lib/api";
 
-// ✅ Axios instance
+// Axios instance (safe for Render free tier)
 const api = axios.create({
   baseURL: API_BASE,
   timeout: 15000,
@@ -28,7 +32,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchHomeData = async () => {
+    const loadHomeData = async () => {
       try {
         const [featuredRes, stonesRes, platesRes, kitsRes] =
           await Promise.allSettled([
@@ -69,109 +73,109 @@ export default function HomePage() {
               : []
           );
         }
-      } catch (error) {
-        console.error("Homepage API error:", error);
+      } catch (err) {
+        console.error("Home page API error:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchHomeData();
+    loadHomeData();
   }, []);
 
   return (
     <>
+      {/* TOP SECTIONS */}
       <HeroSlider />
       <TrustBar />
       <ProductCategories />
 
       {/* ⭐ FEATURED PRODUCTS */}
-      <section className="px-6 md:px-10 py-16 bg-[#140810] text-white">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold">Featured Products</h2>
-          <Link href="/products" className="text-orange-400 hover:underline">
-            View All →
-          </Link>
-        </div>
-
-        {loading ? (
-          <p className="text-gray-400">
-            Loading products… (first load may take ~30s)
-          </p>
-        ) : featured.length === 0 ? (
-          <p className="text-gray-400">No products available</p>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {featured.map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
-          </div>
-        )}
-      </section>
+      <Section
+        title="Featured Products"
+        link="/products"
+        loading={loading}
+        emptyText="No products available"
+      >
+        {featured.map((product) => (
+          <ProductCard key={product._id} product={product} />
+        ))}
+      </Section>
 
       {/* 🪨 HEALING STONES */}
-      <section className="px-6 md:px-10 py-16 bg-[#0f060b] text-white">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold">Healing Stones</h2>
-          <Link href="/stones" className="text-orange-400 hover:underline">
-            View All →
-          </Link>
-        </div>
-
-        {stones.length === 0 ? (
-          <p className="text-gray-400">No stones available</p>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {stones.map((stone) => (
-              <StoneCard key={stone._id} stone={stone} />
-            ))}
-          </div>
-        )}
-      </section>
+      <Section
+        title="Healing Stones"
+        link="/stones"
+        dark
+        emptyText="No stones available"
+      >
+        {stones.map((stone) => (
+          <StoneCard key={stone._id} stone={stone} />
+        ))}
+      </Section>
 
       {/* 💠 CRYSTAL PLATES */}
-      <section className="px-6 md:px-10 py-16 bg-[#140810] text-white">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold">Crystal Plates</h2>
-          <Link href="/crystalPlates" className="text-orange-400 hover:underline">
-            View All →
-          </Link>
-        </div>
-
-        {crystalPlates.length === 0 ? (
-          <p className="text-gray-400">No crystal plates available</p>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {crystalPlates.map((plate) => (
-              <CrystalPlate key={plate._id} product={plate} />
-            ))}
-          </div>
-        )}
-      </section>
+      <Section
+        title="Crystal Plates"
+        link="/crystalPlates"
+        emptyText="No crystal plates available"
+      >
+        {crystalPlates.map((plate) => (
+          <CrystalPlate key={plate._id} product={plate} />
+        ))}
+      </Section>
 
       {/* 🧿 SPIRITUAL KITS */}
-      <section className="px-6 md:px-10 py-16 bg-[#0f060b] text-white">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold">Spiritual Kits</h2>
-          <Link
-            href="/spiritualkits"
-            className="text-orange-400 hover:underline"
-          >
-            View All →
-          </Link>
-        </div>
-
-        {spiritualKits.length === 0 ? (
-          <p className="text-gray-400">No kits available</p>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {spiritualKits.map((kit) => (
-              <SpiritualKitCard key={kit._id} kit={kit} />
-            ))}
-          </div>
-        )}
-      </section>
+      <Section
+        title="Spiritual Kits"
+        link="/spiritualkits"
+        dark
+        emptyText="No kits available"
+      >
+        {spiritualKits.map((kit) => (
+          <SpiritualKitCard key={kit._id} kit={kit} />
+        ))}
+      </Section>
     </>
   );
 }
 
+/* ------------------------------------------------------------------ */
+/* Reusable Section Component (Home Page Only)                         */
+/* ------------------------------------------------------------------ */
+
+function Section({
+  title,
+  link,
+  children,
+  loading = false,
+  emptyText = "No data found",
+  dark = false,
+}) {
+  return (
+    <section
+      className={`px-6 md:px-10 py-16 text-white ${
+        dark ? "bg-[#0f060b]" : "bg-[#140810]"
+      }`}
+    >
+      <div className="flex justify-between items-center mb-8">
+        <h2 className="text-3xl font-bold">{title}</h2>
+        <Link href={link} className="text-orange-400 hover:underline">
+          View All →
+        </Link>
+      </div>
+
+      {loading ? (
+        <p className="text-gray-400">
+          Loading… (Render free tier may take ~30s on first load)
+        </p>
+      ) : children && children.length > 0 ? (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {children}
+        </div>
+      ) : (
+        <p className="text-gray-400">{emptyText}</p>
+      )}
+    </section>
+  );
+}

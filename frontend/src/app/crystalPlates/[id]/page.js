@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import API_BASE_URL from "@/lib/api";
+import { API_BASE } from "@/lib/api"; // ✅ correct import
 
 export default function CrystalPlateDetailPage() {
   const { id } = useParams();
@@ -14,7 +14,7 @@ export default function CrystalPlateDetailPage() {
   useEffect(() => {
     if (!id) return;
 
-    fetch(`${API_BASE_URL}/api/crystalplates/${id}`)
+    fetch(`${API_BASE}/crystalplates/${id}`) // ✅ no extra /api
       .then((res) => {
         if (!res.ok) throw new Error("Invalid crystal plate");
         return res.json();

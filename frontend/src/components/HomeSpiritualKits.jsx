@@ -1,42 +1,67 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import SpiritualKitCard from "./SpiritualKitCard";
 import { API_BASE } from "../lib/api";
 
+export default function HomeSpiritualKits() {
+  const [kits, setKits] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-export default function SpiritualKitCard({ kit }) {
-  if (!kit?.images?.[0]) return null;
+  useEffect(() => {
+    fetch(`${API_BASE}/spiritualkits`)
+      .then((res) => res.json())
+      .then((data) => {
+        // Sirf first 4 kits home page ke liye
+        setKits(Array.isArray(data) ? data.slice(0, 4) : []);
+      })
+      .catch((err) => {
+        console.error("Home spiritual kits error:", err);
+        setKits([]);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="px-6 md:px-10 py-12 bg-[#0f060b]">
+        <p className="text-gray-400">Loading spiritual kits…</p>
+      </section>
+    );
+  }
 
   return (
-    <div className="bg-[#1a0c14] rounded-xl overflow-hidden shadow hover:scale-[1.02] transition">
-      <Link href={`/spiritualkits/${kit._id}`}>
-        <div className="relative h-56 w-full">
-          <Image
-            src={kit.images[0]}
-            alt={kit.name}
-            fill
-            className="object-cover"
-          />
-        </div>
-      </Link>
+    <section className="px-6 md:px-10 py-12 bg-[#0f060b] text-white">
+      {/* HEADER */}
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-3xl font-bold">
+          Spiritual Kits
+        </h2>
 
-      <div className="p-4 text-white">
-        <h3 className="font-semibold text-lg line-clamp-2">
-          {kit.name}
-        </h3>
-
-        <p className="text-sm text-gray-400 mt-1 line-clamp-2">
-          {kit.shortDescription}
-        </p>
-
-        <div className="mt-3 flex items-center gap-2">
-          <span className="text-orange-400 font-bold">
-            ₹{kit.price}
-          </span>
-          <span className="line-through text-gray-500 text-sm">
-            ₹{kit.mrp}
-          </span>
-        </div>
+        <Link
+          href="/spiritualkits"
+          className="text-orange-400 hover:underline"
+        >
+          View All →
+        </Link>
       </div>
-    </div>
+
+      {/* CONTENT */}
+      {kits.length === 0 ? (
+        <p className="text-gray-400">
+          No spiritual kits available
+        </p>
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {kits.map((kit) => (
+            <SpiritualKitCard
+              key={kit._id}
+              kit={kit}
+            />
+          ))}
+        </div>
+      )}
+    </section>
   );
 }

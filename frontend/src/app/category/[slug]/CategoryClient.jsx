@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import ProductCard from "../../../components/ProductCard";
+import { API_BASE } from "@/lib/api"; // ✅ production-safe API
 
 export default function CategoryClient({ slug }) {
   const [items, setItems] = useState([]);
@@ -10,14 +11,10 @@ export default function CategoryClient({ slug }) {
   useEffect(() => {
     if (!slug) return;
 
-    fetch(`http://localhost:5000/api/products/category/${slug}`)
+    fetch(`${API_BASE}/products/category/${slug}`) // ✅ no localhost
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) {
-          setItems(data);
-        } else {
-          setItems([]);
-        }
+        setItems(Array.isArray(data) ? data : []);
         setLoading(false);
       })
       .catch(() => {

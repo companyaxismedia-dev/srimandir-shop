@@ -2,16 +2,14 @@
 
 import { useEffect, useState } from "react";
 import SpiritualKitCard from "../../components/SpiritualKitCard";
-import API_BASE_URL from "@/lib/api";
-
-const API = `${API_BASE_URL}/api/spiritualkits`;
+import { API_BASE } from "@/lib/api"; // ✅ correct import
 
 export default function SpiritualKitsPage() {
   const [kits, setKits] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(API)
+    fetch(`${API_BASE}/spiritualkits`) // ✅ no extra /api
       .then((res) => res.json())
       .then((data) => {
         setKits(Array.isArray(data) ? data : []);

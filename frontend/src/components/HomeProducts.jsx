@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import ProductCard from "./ProductCard";
 import { API_BASE } from "../lib/api";
 
@@ -12,33 +13,53 @@ export default function HomeProducts() {
     fetch(`${API_BASE}/products/featured`)
       .then((res) => res.json())
       .then((data) => {
+        // Home page par sirf 4 products
         setProducts(Array.isArray(data) ? data.slice(0, 4) : []);
       })
       .catch((err) => {
         console.error("HomeProducts error:", err);
+        setProducts([]);
       })
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return null;
+  if (loading) {
+    return (
+      <section className="px-6 md:px-10 py-16 bg-[#140810]">
+        <p className="text-gray-400">Loading products…</p>
+      </section>
+    );
+  }
 
   return (
-    <section className="px-6 md:px-10 py-16 bg-[#140810]">
+    <section className="px-6 md:px-10 py-16 bg-[#140810] text-white">
+      {/* HEADER */}
       <div className="flex justify-between items-center mb-8">
-        <h2 className="text-3xl font-bold text-white">
+        <h2 className="text-3xl font-bold">
           Featured Products
         </h2>
-        <a href="/products" className="text-orange-400 hover:underline">
+
+        {/* ✅ Next.js Link (SPA navigation) */}
+        <Link
+          href="/products"
+          className="text-orange-400 hover:underline"
+        >
           View All →
-        </a>
+        </Link>
       </div>
 
+      {/* CONTENT */}
       {products.length === 0 ? (
-        <p className="text-gray-400">No products available</p>
+        <p className="text-gray-400">
+          No products available
+        </p>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {products.map((product) => (
-            <ProductCard key={product._id} product={product} />
+            <ProductCard
+              key={product._id}
+              product={product}
+            />
           ))}
         </div>
       )}

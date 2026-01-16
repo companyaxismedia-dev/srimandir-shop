@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import API_BASE_URL from "@/lib/api";
+import { API_BASE } from "@/lib/api"; // ✅ correct import
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -14,7 +14,7 @@ export default function ProductDetailPage() {
   useEffect(() => {
     if (!id) return;
 
-    fetch(`${API_BASE_URL}/api/products/${id}`)
+    fetch(`${API_BASE}/products/${id}`) // ✅ no extra /api
       .then((res) => {
         if (!res.ok) throw new Error("Invalid product");
         return res.json();

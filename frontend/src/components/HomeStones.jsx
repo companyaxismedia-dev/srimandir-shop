@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import StoneCard from "./StoneCard";
 import { API_BASE } from "../lib/api";
 
@@ -14,11 +15,20 @@ export default function HomeStones() {
       .then((data) => {
         setStones(Array.isArray(data) ? data.slice(0, 4) : []);
       })
-      .catch(console.error)
+      .catch((err) => {
+        console.error("Home stones error:", err);
+        setStones([]);
+      })
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return null;
+  if (loading) {
+    return (
+      <section className="px-6 md:px-10 py-12 bg-[#140810]">
+        <p className="text-gray-400">Loading stones…</p>
+      </section>
+    );
+  }
 
   return (
     <section className="px-6 md:px-10 py-12 bg-[#140810]">
@@ -26,9 +36,14 @@ export default function HomeStones() {
         <h2 className="text-3xl font-bold text-white">
           Healing Stones
         </h2>
-        <a href="/stones" className="text-orange-400 hover:underline">
+
+        {/* ✅ Next.js Link (better than <a>) */}
+        <Link
+          href="/stones"
+          className="text-orange-400 hover:underline"
+        >
           View All →
-        </a>
+        </Link>
       </div>
 
       {stones.length === 0 ? (

@@ -1,22 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ProductCard from "../../components/CrystalPlate";
-import API_BASE_URL from "@/lib/api";
+import CrystalPlateCard from "../../components/CrystalPlate"; // ✅ clear name
+import { API_BASE } from "@/lib/api"; // ✅ correct import
 
 export default function CrystalPlatesPage() {
   const [plates, setPlates] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/crystalplates`)
+    fetch(`${API_BASE}/crystalplates`) // ✅ no extra /api
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) {
-          setPlates(data);
-        } else {
-          setPlates([]);
-        }
+        setPlates(Array.isArray(data) ? data : []);
         setLoading(false);
       })
       .catch((err) => {
@@ -45,7 +41,7 @@ export default function CrystalPlatesPage() {
       ) : (
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {plates.map((plate) => (
-            <ProductCard
+            <CrystalPlateCard
               key={plate._id}
               product={plate}
             />

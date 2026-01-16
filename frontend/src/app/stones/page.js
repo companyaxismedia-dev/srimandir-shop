@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react";
 import StoneCard from "../../components/StoneCard";
-import API_BASE_URL from "@/lib/api";
+import { API_BASE } from "@/lib/api"; // ✅ correct import
 
 export default function StonesPage() {
   const [stones, setStones] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/stones`)
+    fetch(`${API_BASE}/stones`) // ✅ no extra /api
       .then((res) => res.json())
       .then((data) => {
         setStones(Array.isArray(data) ? data : []);
