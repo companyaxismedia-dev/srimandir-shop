@@ -56,7 +56,7 @@ export default function Footer() {
             Contact Us
           </h3>
           <p className="text-sm">📍 India</p>
-          <p className="text-sm mt-1">📧 support@srimandir.com</p>
+          <p className="text-sm mt-1">📧 companyaxismedia@gmail.com</p>
           <p className="text-sm mt-1">📞 +91 98715 84001</p>
         </div>
       </div>
